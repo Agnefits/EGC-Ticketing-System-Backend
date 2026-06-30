@@ -14,6 +14,11 @@ namespace EGC_Ticketing_System.Data
         public DbSet<TeamMember> TeamMembers { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Log> Logs { get; set; }
+        public DbSet<TicketTask> TicketTasks { get; set; }
+        public DbSet<TicketStatusHistory> TicketStatusHistories { get; set; }
+        public DbSet<TicketTaskStatusHistory> TicketTaskStatusHistories { get; set; }
+        public DbSet<UserRate> UserRates { get; set; }
+        public DbSet<RateItem> RateItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -74,6 +79,77 @@ namespace EGC_Ticketing_System.Data
                 .WithMany(u => u.Logs)
                 .HasForeignKey(l => l.UserId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            // TicketTask relationships
+            modelBuilder.Entity<TicketTask>()
+                .HasOne(tt => tt.Ticket)
+                .WithMany(t => t.TicketTasks)
+                .HasForeignKey(tt => tt.TicketId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<TicketTask>()
+                .HasOne(tt => tt.Member)
+                .WithMany(u => u.AssignedTasks)
+                .HasForeignKey(tt => tt.MemberId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<TicketTask>()
+                .HasOne(tt => tt.CreatedBy)
+                .WithMany(u => u.CreatedTasks)
+                .HasForeignKey(tt => tt.CreatedById)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // TicketStatusHistory relationships
+            modelBuilder.Entity<TicketStatusHistory>()
+                .HasOne(tsh => tsh.Ticket)
+                .WithMany(t => t.StatusHistories)
+                .HasForeignKey(tsh => tsh.TicketId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<TicketStatusHistory>()
+                .HasOne(tsh => tsh.ChangedBy)
+                .WithMany()
+                .HasForeignKey(tsh => tsh.ChangedById)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // TicketTaskStatusHistory relationships
+            modelBuilder.Entity<TicketTaskStatusHistory>()
+                .HasOne(ttsh => ttsh.TicketTask)
+                .WithMany(tt => tt.StatusHistories)
+                .HasForeignKey(ttsh => ttsh.TicketTaskId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<TicketTaskStatusHistory>()
+                .HasOne(ttsh => ttsh.ChangedBy)
+                .WithMany()
+                .HasForeignKey(ttsh => ttsh.ChangedById)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // UserRate relationships
+            modelBuilder.Entity<UserRate>()
+                .HasOne(ur => ur.FromUser)
+                .WithMany(u => u.RatesGiven)
+                .HasForeignKey(ur => ur.FromUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<UserRate>()
+                .HasOne(ur => ur.ToUser)
+                .WithMany(u => u.RatesReceived)
+                .HasForeignKey(ur => ur.ToUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<UserRate>()
+                .HasOne(ur => ur.ApprovedBy)
+                .WithMany(u => u.RatesApproved)
+                .HasForeignKey(ur => ur.ApprovedById)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // RateItem relationship
+            modelBuilder.Entity<RateItem>()
+                .HasOne(ri => ri.UserRate)
+                .WithMany(ur => ur.RateItems)
+                .HasForeignKey(ri => ri.UserRateId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // User entity properties validation
             modelBuilder.Entity<User>(entity =>

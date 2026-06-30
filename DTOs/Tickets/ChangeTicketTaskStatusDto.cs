@@ -5,10 +5,10 @@ using EGC_Ticketing_System.Enums;
 
 namespace EGC_Ticketing_System.DTOs.Tickets
 {
-    public class ChangeTicketStatusDto
+    public class ChangeTicketTaskStatusDto
     {
         [Required]
-        public TicketStatus Status { get; set; }
+        public TicketTaskStatus Status { get; set; }
 
         [MaxLength(1000)]
         public string? Comment { get; set; }

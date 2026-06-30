@@ -47,5 +47,20 @@ namespace EGC_Ticketing_System.Models
 
         [JsonIgnore]
         public virtual ICollection<Log> Logs { get; set; } = new List<Log>();
+
+        [JsonIgnore]
+        public virtual ICollection<UserRate> RatesGiven { get; set; } = new List<UserRate>();
+
+        [JsonIgnore]
+        public virtual ICollection<UserRate> RatesReceived { get; set; } = new List<UserRate>();
+
+        [JsonIgnore]
+        public virtual ICollection<UserRate> RatesApproved { get; set; } = new List<UserRate>();
+
+        [JsonIgnore]
+        public virtual ICollection<TicketTask> AssignedTasks { get; set; } = new List<TicketTask>();
+
+        [JsonIgnore]
+        public virtual ICollection<TicketTask> CreatedTasks { get; set; } = new List<TicketTask>();
     }
 }

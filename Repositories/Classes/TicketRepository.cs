@@ -20,6 +20,15 @@ namespace EGC_Ticketing_System.Repositories.Classes
                 .Include(t => t.Team)
                 .Include(t => t.Member)
                 .Include(t => t.CreatedBy)
+                .Include(t => t.StatusHistories)
+                    .ThenInclude(sh => sh.ChangedBy)
+                .Include(t => t.TicketTasks)
+                    .ThenInclude(tt => tt.Member)
+                .Include(t => t.TicketTasks)
+                    .ThenInclude(tt => tt.CreatedBy)
+                .Include(t => t.TicketTasks)
+                    .ThenInclude(tt => tt.StatusHistories)
+                        .ThenInclude(sh => sh.ChangedBy)
                 .FirstOrDefaultAsync(t => t.Id == id);
         }
 

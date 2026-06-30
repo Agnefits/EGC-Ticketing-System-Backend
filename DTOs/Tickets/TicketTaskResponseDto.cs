@@ -1,12 +1,13 @@
 using System;
+using System.Collections.Generic;
 
 namespace EGC_Ticketing_System.DTOs.Tickets
 {
-    public class TicketResponseDto
+    public class TicketTaskResponseDto
     {
         public int Id { get; set; }
-        public int TeamId { get; set; }
-        public string TeamName { get; set; } = string.Empty;
+        public int TicketId { get; set; }
+        public string TicketTitle { get; set; } = string.Empty;
         public int? MemberId { get; set; }
         public string? MemberName { get; set; }
         public int CreatedById { get; set; }
@@ -18,7 +19,6 @@ namespace EGC_Ticketing_System.DTOs.Tickets
         public DateTime? CompletedAt { get; set; }
         public string Status { get; set; } = string.Empty;
         public string Priority { get; set; } = string.Empty;
-        public System.Collections.Generic.List<TicketTaskResponseDto> TicketTasks { get; set; } = new System.Collections.Generic.List<TicketTaskResponseDto>();
-        public System.Collections.Generic.List<TicketStatusHistoryResponseDto> StatusHistories { get; set; } = new System.Collections.Generic.List<TicketStatusHistoryResponseDto>();
+        public List<TicketTaskStatusHistoryResponseDto> StatusHistories { get; set; } = new List<TicketTaskStatusHistoryResponseDto>();
     }
 }
